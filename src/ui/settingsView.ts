@@ -51,7 +51,7 @@ export async function renderSettings(main: HTMLElement): Promise<void> {
         }, 'Clear search history')),
       h('section', {},
         h('h3', {}, 'ℹ️ About & data licenses'),
-        h('p', {}, 'Dict — an offline dictionary PWA. Install it via “Add to Home Screen” in your browser.'),
+        h('p', {}, 'Sarfy Dict — an offline dictionary PWA. Install it via “Add to Home Screen” in your browser.'),
         h('p', {},
           'Dictionary data: ',
           h('a', { href: 'https://www.wikdict.com', target: '_blank', rel: 'noopener' }, 'WikDict'),

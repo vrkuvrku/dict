@@ -9,7 +9,7 @@ export function showOnboarding(isUpdate = false): Promise<void> {
     const status = h('div', { class: 'status' }, 'Preparing…');
     const overlay = h('div', { class: 'onboarding' },
       h('img', { src: import.meta.env.BASE_URL + 'icons/icon-192.png', alt: 'Dict' }),
-      h('h1', {}, isUpdate ? 'Updating dictionaries' : 'Welcome to Dict'),
+      h('h1', {}, isUpdate ? 'Updating dictionaries' : 'Welcome to Sarfy Dict'),
       h('p', {}, isUpdate
         ? 'Downloading a new version of the dictionary data.'
         : 'A dictionary for English, Spanish, French and Czech. It downloads ~21 MB of data once, then works fully offline.'),

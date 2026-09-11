@@ -1,6 +1,6 @@
 {
-  "name": "Dict — EN·ES·FR·CS dictionary",
-  "short_name": "Dict",
+  "name": "Sarfy Dict — EN·ES·FR·CS dictionary",
+  "short_name": "Sarfy Dict",
   "description": "Offline dictionary: English, Spanish, French, Czech",
   "start_url": "/dict/",
   "scope": "/dict/",

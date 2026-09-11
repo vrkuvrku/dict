@@ -125,7 +125,7 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
         onclick: async (e: Event) => {
           e.stopPropagation();
           const url = `${location.origin}${location.pathname}#w/${r.pair}/${encodeURIComponent(r.w)}`;
-          if (navigator.share) await navigator.share({ title: `${r.w} — Dict`, url }).catch(() => {});
+          if (navigator.share) await navigator.share({ title: `${r.w} — Sarfy Dict`, url }).catch(() => {});
           else { await navigator.clipboard.writeText(url); (e.target as HTMLElement).textContent = '✓ copied'; }
         },
       }, '↗ share'),
