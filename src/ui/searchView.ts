@@ -1,7 +1,7 @@
 import { h, clear } from './dom';
 import { search } from '../search';
 import type { Result } from '../search';
-import { addHistory, toggleFav, getFavIds, favId } from '../db';
+import { addHistory, deleteHistory, toggleFav, getFavIds, favId } from '../db';
 import { speak } from '../tts';
 import { srcLang, dstLang, LANGS } from '../types';
 import type { Lang } from '../types';
@@ -14,7 +14,9 @@ let debounceTimer = 0;
 let lastQuery = '';
 let selectedIdx = -1;
 let favIds = new Set<string>();
-const loggedThisSession = new Set<string>();
+// sleduje poslední záznam v historii kvůli mazání neúplných slov
+let lastHistoryId: number | undefined;
+let lastHistoryWord = '';
 
 export function initSearchView(main: HTMLElement, header: HTMLElement): void {
   container = main;
@@ -72,12 +74,15 @@ export async function runSearch(expandWord?: { pair: string; word: string }): Pr
     container.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🤷'), `Nothing for “${q.trim()}”`));
     return;
   }
-  // zaloguj do historie nejlepší výsledek hned po vyhledání (ne až po kliknutí)
+  // zaloguj do historie nejlepší výsledek; pokud předchozí slovo je prefix nového, smaž ho
   const top = results[0];
-  const logKey = `${top.pair}|${top.w}`;
-  if (!loggedThisSession.has(logKey)) {
-    loggedThisSession.add(logKey);
-    addHistory({ word: top.w, pair: top.pair, trans: top.t, ts: Date.now() });
+  if (top.w !== lastHistoryWord) {
+    const normalize = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const prevWasPrefix = lastHistoryId !== undefined
+      && normalize(top.w).startsWith(normalize(lastHistoryWord));
+    if (prevWasPrefix) deleteHistory(lastHistoryId!);
+    lastHistoryId = await addHistory({ word: top.w, pair: top.pair, trans: top.t, ts: Date.now() });
+    lastHistoryWord = top.w;
   }
   for (const r of results) container.append(renderCard(r, expandWord));
 }

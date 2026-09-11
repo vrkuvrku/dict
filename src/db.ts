@@ -104,18 +104,23 @@ export const getAllMeta = (): Promise<PairMeta[]> => getAll<PairMeta>('meta');
 
 // --- historie ---
 
-export async function addHistory(item: Omit<HistoryItem, 'id'>): Promise<void> {
+export async function addHistory(item: Omit<HistoryItem, 'id'>): Promise<number> {
   const db = await openDB();
   const tx = db.transaction('history', 'readwrite');
   const store = tx.objectStore('history');
-  store.add(item);
+  const id = await reqAsync(store.add(item)) as number;
   // drž max ~500 položek
   const count = await reqAsync(store.count());
   if (count > 500) {
     const cursor = await reqAsync(store.index('ts').openCursor());
     if (cursor) cursor.delete();
   }
-  return txDone(tx);
+  await txDone(tx);
+  return id;
+}
+
+export async function deleteHistory(id: number): Promise<void> {
+  return del('history', id);
 }
 
 export async function getHistory(limit = 200): Promise<HistoryItem[]> {

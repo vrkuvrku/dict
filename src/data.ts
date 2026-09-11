@@ -22,7 +22,8 @@ export const getDataVersion = (): Promise<string | undefined> => kvGet<string>('
 
 export type Progress = { pair: Pair; pairIdx: number; pairCount: number; phase: 'download' | 'import' };
 
-async function importPair(pair: Pair, version: string, onProgress: (p: Progress) => void, pairIdx: number): Promise<void> {
+async function importPair(pair: Pair, manifest: DataManifest, onProgress: (p: Progress) => void, pairIdx: number): Promise<void> {
+  const version = manifest.version;
   onProgress({ pair, pairIdx, pairCount: PAIRS.length, phase: 'download' });
   const res = await fetch(`${BASE}${pair}.tsv.gz`, { cache: 'no-cache' });
   if (!res.ok || !res.body) throw new Error(`${pair}: HTTP ${res.status}`);
@@ -43,14 +44,15 @@ async function importPair(pair: Pair, version: string, onProgress: (p: Progress)
     index.push(normalize(slice[0].w));
     chunks.push({ pair, idx: i, first: index[i], entries: slice });
   }
-  const meta: PairMeta = { pair, version, count: entries.length, index };
+  const bytes = manifest.pairs[pair]?.bytes ?? 0;
+  const meta: PairMeta = { pair, version, count: entries.length, bytes, index };
   await saveDictionary(meta, chunks);
 }
 
 export async function importAll(onProgress: (p: Progress) => void): Promise<void> {
   const manifest = await fetchManifest();
   for (let i = 0; i < PAIRS.length; i++) {
-    await importPair(PAIRS[i], manifest.version, onProgress, i);
+    await importPair(PAIRS[i], manifest, onProgress, i);
   }
   await kvSet('dataVersion', manifest.version);
 }

@@ -9,7 +9,7 @@ export type Pair = (typeof PAIRS)[number];
 export interface Entry { w: string; p: string; s: string; t: string; i: number }
 
 export interface Chunk { pair: Pair; idx: number; first: string; entries: Entry[] }
-export interface PairMeta { pair: Pair; version: string; count: number; index: string[] }
+export interface PairMeta { pair: Pair; version: string; count: number; bytes: number; index: string[] }
 
 export interface HistoryItem { id?: number; word: string; pair: Pair; trans: string; ts: number }
 export interface FavItem { id: string; word: string; pair: Pair; trans: string; ts: number }
