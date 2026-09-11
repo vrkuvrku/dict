@@ -56,9 +56,10 @@ export async function search(query: string, sourceLangs: Lang[] | null): Promise
   const pairs = PAIRS.filter(p => !sourceLangs || sourceLangs.includes(srcLang(p)));
   const perPair = await Promise.all(pairs.map(p => searchPair(p, q)));
   const all = perPair.flat();
-  // score není mezi páry srovnatelné → u přesných shod preferuj překlad do češtiny
+  // překlady před čistě výkladovými záznamy (t=''), pak přesné shody, pak skóre
   all.sort((a, b) =>
-    Number(b.exact) - Number(a.exact)
+    Number(!!b.t) - Number(!!a.t)
+    || Number(b.exact) - Number(a.exact)
     || Number(dstLang(b.pair) === 'cs') - Number(dstLang(a.pair) === 'cs')
     || b.i - a.i
     || a.w.length - b.w.length

@@ -1,8 +1,7 @@
 export type Lang = 'en' | 'es' | 'fr' | 'cs';
 export const LANGS: Lang[] = ['en', 'es', 'fr', 'cs'];
 export const PAIRS = [
-  'en-cs', 'cs-en', 'en-es', 'es-en', 'en-fr', 'fr-en',
-  'es-cs', 'cs-es', 'fr-cs', 'cs-fr', 'es-fr', 'fr-es',
+  'en-cs', 'cs-en', 'es-cs', 'cs-es', 'fr-cs', 'cs-fr',
 ] as const;
 export type Pair = (typeof PAIRS)[number];
 

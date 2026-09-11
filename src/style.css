@@ -98,6 +98,7 @@ main { flex: 1; padding: 14px 14px calc(76px + var(--safe-bottom)); max-width: 6
 }
 .badge.b-en { background: var(--en); } .badge.b-es { background: var(--es); }
 .badge.b-fr { background: var(--fr); } .badge.b-cs { background: var(--cs); }
+.card.defonly .badge { background: var(--muted); }
 
 /* ---------- seznamy (historie, oblíbené) ---------- */
 .listitem {

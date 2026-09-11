@@ -96,25 +96,30 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
     },
   }, favIds.has(id) ? '★' : '☆');
 
-  const card = h('div', { class: 'card' },
+  const isDefOnly = !r.t; // čistě výkladový záznam (WordNet bez překladu)
+  const card = h('div', { class: `card${isDefOnly ? ' defonly' : ''}` },
     h('div', { class: 'row1' },
       h('span', { class: 'word' }, r.w),
       r.p ? h('span', { class: 'pos' }, r.p) : null,
       h('span', { class: 'spacer' }),
-      h('span', { class: `badge b-${sl}` }, sl.toUpperCase()),
-      h('span', { style: 'color:var(--muted);font-size:11px' }, '→'),
-      h('span', { class: `badge b-${dl}` }, dl.toUpperCase()),
+      isDefOnly
+        ? h('span', { class: `badge b-${sl}`, title: 'definition' }, 'DEF')
+        : h('span', { class: `badge b-${sl}` }, sl.toUpperCase()),
+      isDefOnly ? null : h('span', { style: 'color:var(--muted);font-size:11px' }, '→'),
+      isDefOnly ? null : h('span', { class: `badge b-${dl}` }, dl.toUpperCase()),
       star,
       h('button', {
         class: 'iconbtn', title: 'Pronounce',
         onclick: (e: Event) => { e.stopPropagation(); speak(r.w, sl); },
       }, '🔊'),
     ),
-    h('div', { class: 'trans' }, r.t),
-    r.s ? h('div', { class: 'sense' }, r.s) : null,
+    // překlad NEBO definice jako hlavní text
+    h('div', { class: 'trans' }, r.t || r.s),
+    // sense je doplňkový text — u defonly ho nezobrazujeme (je to jen t)
+    !isDefOnly && r.s ? h('div', { class: 'sense' }, r.s) : null,
     h('div', { class: 'actions' },
       h('button', {
-        onclick: (e: Event) => { e.stopPropagation(); speak(r.t.split('|')[0], dl); },
+        onclick: (e: Event) => { e.stopPropagation(); speak(r.t ? r.t.split('|')[0] : r.w, r.t ? dl : sl); },
       }, '🔊 translation'),
       h('button', {
         onclick: async (e: Event) => {
