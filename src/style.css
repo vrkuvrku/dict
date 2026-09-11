@@ -1,0 +1,172 @@
+:root {
+  --grad: linear-gradient(135deg, #4f46e5, #06b6d4);
+  --accent: #4f46e5;
+  --bg: #f4f5fb;
+  --card: #ffffff;
+  --text: #1a1d29;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --chip: #e8eaf6;
+  --en: #2563eb; --es: #d97706; --fr: #be123c; --cs: #16a34a;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1117;
+    --card: #1a1e29;
+    --text: #e7e9f0;
+    --muted: #9aa0b0;
+    --border: #2a2f3d;
+    --chip: #252a3a;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font: 16px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+#app { display: flex; flex-direction: column; min-height: 100dvh; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+
+/* ---------- hlavička s vyhledáváním ---------- */
+header.top {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--grad);
+  padding: 12px 14px 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+}
+.searchrow { display: flex; align-items: center; gap: 8px; }
+.searchbox {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border-radius: 14px; padding: 10px 14px;
+}
+.searchbox svg { flex: none; opacity: .5; }
+#q {
+  flex: 1; border: none; outline: none; background: none;
+  font-size: 17px; color: var(--text); min-width: 0;
+}
+#clearq { opacity: .5; font-size: 18px; display: none; }
+.offline-badge {
+  display: none; font-size: 11px; font-weight: 600; color: #fff;
+  background: rgba(0,0,0,.25); border-radius: 8px; padding: 3px 8px;
+}
+body.offline .offline-badge { display: block; }
+
+.chips { display: flex; gap: 6px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; font-size: 13px; font-weight: 600; color: #fff;
+  background: rgba(255,255,255,.18); border-radius: 20px; padding: 5px 13px;
+  transition: background .15s;
+}
+.chip.active { background: #fff; color: var(--accent); }
+
+/* ---------- obsah ---------- */
+main { flex: 1; padding: 14px 14px calc(76px + var(--safe-bottom)); max-width: 640px; width: 100%; margin: 0 auto; }
+.hint { text-align: center; color: var(--muted); margin-top: 48px; font-size: 15px; }
+.hint .big { font-size: 44px; margin-bottom: 10px; }
+
+/* ---------- karty výsledků ---------- */
+.card {
+  background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  cursor: pointer;
+}
+.card.selected { outline: 2px solid var(--accent); }
+.card .row1 { display: flex; align-items: center; gap: 8px; }
+.card .word { font-size: 18px; font-weight: 700; }
+.card .pos { font-size: 12px; color: var(--muted); font-style: italic; }
+.card .spacer { flex: 1; }
+.card .trans { margin-top: 4px; font-size: 16px; }
+.card .sense { margin-top: 3px; font-size: 13px; color: var(--muted); display: none; }
+.card.expanded .sense { display: block; }
+.card .actions { display: none; gap: 14px; margin-top: 10px; }
+.card.expanded .actions { display: flex; }
+.card .actions button { font-size: 13px; color: var(--accent); font-weight: 600; }
+.iconbtn { font-size: 19px; opacity: .75; padding: 2px 4px; }
+.iconbtn.faved { opacity: 1; }
+
+.badge {
+  font-size: 11px; font-weight: 700; color: #fff; border-radius: 6px;
+  padding: 2px 7px; letter-spacing: .3px;
+}
+.badge.b-en { background: var(--en); } .badge.b-es { background: var(--es); }
+.badge.b-fr { background: var(--fr); } .badge.b-cs { background: var(--cs); }
+
+/* ---------- seznamy (historie, oblíbené) ---------- */
+.listitem {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer;
+}
+.listitem .word { font-weight: 600; }
+.listitem .trans { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.listitem .time { margin-left: auto; flex: none; font-size: 12px; color: var(--muted); }
+.sectionhead { display: flex; align-items: center; justify-content: space-between; margin: 6px 2px 12px; }
+.sectionhead h2 { font-size: 18px; margin: 0; }
+.sectionhead button { color: var(--accent); font-size: 14px; font-weight: 600; }
+
+/* ---------- procvičování ---------- */
+.practice { text-align: center; margin-top: 24px; }
+.flashcard {
+  background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+  padding: 40px 20px; margin: 16px 0; box-shadow: 0 4px 16px rgba(0,0,0,.07);
+}
+.flashcard .word { font-size: 30px; font-weight: 800; }
+.flashcard .trans { font-size: 20px; margin-top: 14px; color: var(--accent); }
+.pbtn {
+  border-radius: 12px; padding: 12px 22px; font-weight: 700; font-size: 15px; color: #fff;
+  background: var(--grad); margin: 4px;
+}
+.pbtn.no { background: #dc2626; }
+.pbtn.yes { background: #16a34a; }
+.practice .stats { color: var(--muted); font-size: 14px; margin-top: 14px; }
+
+/* ---------- nastavení ---------- */
+.settings section {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 12px; font-size: 14px;
+}
+.settings h3 { margin: 0 0 8px; font-size: 15px; }
+.settings p { margin: 6px 0; color: var(--muted); }
+.settings a { color: var(--accent); }
+.settings .btn {
+  display: inline-block; background: var(--grad); color: #fff; font-weight: 600;
+  border-radius: 10px; padding: 9px 16px; margin-top: 6px; font-size: 14px;
+}
+.settings .btn.danger { background: #dc2626; }
+
+/* ---------- spodní lišta ---------- */
+nav.tabs {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+  display: flex; justify-content: space-around;
+  background: var(--card); border-top: 1px solid var(--border);
+  padding: 6px 0 calc(6px + var(--safe-bottom));
+}
+nav.tabs button {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  font-size: 11px; color: var(--muted); width: 64px; padding: 4px 0;
+}
+nav.tabs button .ico { font-size: 21px; line-height: 1; }
+nav.tabs button.active { color: var(--accent); font-weight: 700; }
+
+/* ---------- onboarding ---------- */
+.onboarding {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--grad); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 32px;
+}
+.onboarding img { width: 96px; border-radius: 22px; box-shadow: 0 8px 30px rgba(0,0,0,.3); }
+.onboarding h1 { font-size: 26px; margin: 18px 0 6px; }
+.onboarding p { opacity: .9; max-width: 320px; }
+.progress { width: min(320px, 80vw); height: 8px; background: rgba(255,255,255,.25); border-radius: 6px; margin-top: 22px; overflow: hidden; }
+.progress > div { height: 100%; background: #fff; border-radius: 6px; width: 0; transition: width .3s; }
+.onboarding .status { margin-top: 10px; font-size: 13px; opacity: .85; min-height: 1.4em; }
+.onboarding .btn { background: #fff; color: var(--accent); font-weight: 700; border-radius: 12px; padding: 11px 24px; margin-top: 18px; }

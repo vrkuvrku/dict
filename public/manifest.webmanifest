@@ -1,0 +1,16 @@
+{
+  "name": "Dict — slovník EN·ES·FR·CS",
+  "short_name": "Dict",
+  "description": "Offline slovník: angličtina, španělština, francouzština, čeština",
+  "start_url": "/dict/",
+  "scope": "/dict/",
+  "display": "standalone",
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
+  "lang": "cs",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+ "version": "2026-09-11",
+ "pairs": {
+  "en-cs": {
+   "count": 200207,
+   "bytes": 2825596
+  },
+  "cs-en": {
+   "count": 188089,
+   "bytes": 2009228
+  },
+  "en-es": {
+   "count": 101339,
+   "bytes": 2491840
+  },
+  "es-en": {
+   "count": 101549,
+   "bytes": 1566541
+  },
+  "en-fr": {
+   "count": 187161,
+   "bytes": 3379039
+  },
+  "fr-en": {
+   "count": 175450,
+   "bytes": 2828423
+  },
+  "es-cs": {
+   "count": 21077,
+   "bytes": 605252
+  },
+  "cs-es": {
+   "count": 22781,
+   "bytes": 393978
+  },
+  "fr-cs": {
+   "count": 54075,
+   "bytes": 1044436
+  },
+  "cs-fr": {
+   "count": 36238,
+   "bytes": 569779
+  },
+  "es-fr": {
+   "count": 70993,
+   "bytes": 1226001
+  },
+  "fr-es": {
+   "count": 88022,
+   "bytes": 1563111
+  }
+ }
+}
