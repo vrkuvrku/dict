@@ -87,6 +87,16 @@ function switchTab(tab: Tab, pushHash = false): void {
 }
 
 function route(): void {
+  // ?slovo  →  vyhledej "slovo" napříč všemi jazyky
+  const qs = location.search.slice(1);
+  if (qs) {
+    const word = decodeURIComponent(qs);
+    switchTab('search');
+    setQuery(word);
+    // nahraď URL čistým hashem, ať reload nevyvolá znovu search
+    history.replaceState(null, '', location.pathname);
+    return;
+  }
   const hash = location.hash.slice(1);
   if (hash.startsWith('w/')) {
     const [, pair, word] = hash.split('/');
