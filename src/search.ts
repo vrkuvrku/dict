@@ -1,7 +1,7 @@
 // Prefixové hledání napříč páry: binární hledání v indexu chunků (meta.index),
 // pak lineární scan seřazeného chunku.
 import { getChunk, getAllMeta } from './db';
-import { PAIRS, normalize, srcLang } from './types';
+import { PAIRS, normalize, srcLang, dstLang } from './types';
 import type { Entry, Lang, Pair, PairMeta } from './types';
 
 export interface Result extends Entry { pair: Pair; exact: boolean }
@@ -56,8 +56,10 @@ export async function search(query: string, sourceLangs: Lang[] | null): Promise
   const pairs = PAIRS.filter(p => !sourceLangs || sourceLangs.includes(srcLang(p)));
   const perPair = await Promise.all(pairs.map(p => searchPair(p, q)));
   const all = perPair.flat();
+  // score není mezi páry srovnatelné → u přesných shod preferuj překlad do češtiny
   all.sort((a, b) =>
     Number(b.exact) - Number(a.exact)
+    || Number(dstLang(b.pair) === 'cs') - Number(dstLang(a.pair) === 'cs')
     || b.i - a.i
     || a.w.length - b.w.length
     || a.w.localeCompare(b.w));
