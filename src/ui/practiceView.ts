@@ -7,16 +7,16 @@ import type { CardItem } from '../types';
 
 export async function renderPractice(main: HTMLElement): Promise<void> {
   const due = await getDueCards();
-  clear(main).append(h('div', { class: 'sectionhead' }, h('h2', {}, 'Procvičování')));
+  clear(main).append(h('div', { class: 'sectionhead' }, h('h2', {}, 'Practice')));
   if (!due.length) {
     const all = await getCards();
     const next = all.length ? Math.min(...all.map(c => c.due)) : 0;
     const nextTxt = all.length
-      ? `Další kartička ${next <= Date.now() ? 'teď' : 'za ' + Math.ceil((next - Date.now()) / 3600e3) + ' h'}.`
-      : 'Přidej si slova hvězdičkou u výsledků hledání.';
+      ? `Next card ${next <= Date.now() ? 'now' : 'in ' + Math.ceil((next - Date.now()) / 3600e3) + ' h'}.`
+      : 'Star words in search results to add them.';
     main.append(h('div', { class: 'hint' },
       h('div', { class: 'big' }, all.length ? '🎉' : '🃏'),
-      all.length ? 'Vše procvičeno!' : 'Zatím žádné kartičky',
+      all.length ? 'All done!' : 'No flashcards yet',
       h('div', { style: 'font-size:13px;margin-top:8px' }, nextTxt)));
     return;
   }
@@ -29,10 +29,10 @@ function showCard(main: HTMLElement, queue: CardItem[], done: number, total: num
   const sl = srcLang(card.pair);
 
   const transEl = h('div', { class: 'trans', style: 'display:none' }, card.trans);
-  const revealBtn = h('button', { class: 'pbtn', onclick: () => reveal() }, 'Ukázat překlad');
+  const revealBtn = h('button', { class: 'pbtn', onclick: () => reveal() }, 'Show translation');
   const answerBtns = h('div', { style: 'display:none' },
-    h('button', { class: 'pbtn no', onclick: () => answer(false) }, '✗ Nevěděl'),
-    h('button', { class: 'pbtn yes', onclick: () => answer(true) }, '✓ Věděl'),
+    h('button', { class: 'pbtn no', onclick: () => answer(false) }, '✗ Didn’t know'),
+    h('button', { class: 'pbtn yes', onclick: () => answer(true) }, '✓ Knew it'),
   );
 
   function reveal(): void {
@@ -46,7 +46,7 @@ function showCard(main: HTMLElement, queue: CardItem[], done: number, total: num
   }
 
   clear(main).append(
-    h('div', { class: 'sectionhead' }, h('h2', {}, 'Procvičování'),
+    h('div', { class: 'sectionhead' }, h('h2', {}, 'Practice'),
       h('span', { style: 'color:var(--muted);font-size:14px' }, `${done + 1} / ${total}`)),
     h('div', { class: 'practice' },
       h('div', { class: 'flashcard' },
@@ -56,6 +56,6 @@ function showCard(main: HTMLElement, queue: CardItem[], done: number, total: num
         h('div', { class: 'word', style: 'margin-top:10px' }, card.word),
         transEl),
       revealBtn, answerBtns,
-      h('div', { class: 'stats' }, `krabička ${card.box} ze 3`)),
+      h('div', { class: 'stats' }, `box ${card.box} of 3`)),
   );
 }

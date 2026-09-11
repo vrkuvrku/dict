@@ -57,8 +57,8 @@ export async function runSearch(expandWord?: { pair: string; word: string }): Pr
     clear(container).append(
       h('div', { class: 'hint' },
         h('div', { class: 'big' }, '💬'),
-        h('div', {}, 'Napiš slovo v libovolném jazyce'),
-        h('div', { style: 'font-size:13px;margin-top:6px' }, 'angličtina · španělština · francouzština · čeština')),
+        h('div', {}, 'Type a word in any language'),
+        h('div', { style: 'font-size:13px;margin-top:6px' }, 'English · Spanish · French · Czech')),
     );
     return;
   }
@@ -69,7 +69,7 @@ export async function runSearch(expandWord?: { pair: string; word: string }): Pr
   if (input.value !== lastQuery) return; // mezitím se psalo dál
   clear(container);
   if (!results.length) {
-    container.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🤷'), `Nic pro „${q.trim()}"`));
+    container.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🤷'), `Nothing for “${q.trim()}”`));
     return;
   }
   for (const r of results) container.append(renderCard(r, expandWord));
@@ -80,7 +80,7 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
   const sl = srcLang(r.pair), dl = dstLang(r.pair);
   const star = h('button', {
     class: `iconbtn ${favIds.has(id) ? 'faved' : ''}`,
-    title: 'Oblíbené',
+    title: 'Favorite',
     onclick: async (e: Event) => {
       e.stopPropagation();
       const on = await toggleFav({ id, word: r.w, pair: r.pair, trans: r.t });
@@ -99,7 +99,7 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
       h('span', { class: `badge b-${dl}` }, dl.toUpperCase()),
       star,
       h('button', {
-        class: 'iconbtn', title: 'Výslovnost',
+        class: 'iconbtn', title: 'Pronounce',
         onclick: (e: Event) => { e.stopPropagation(); speak(r.w, sl); },
       }, '🔊'),
     ),
@@ -108,15 +108,15 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
     h('div', { class: 'actions' },
       h('button', {
         onclick: (e: Event) => { e.stopPropagation(); speak(r.t.split('|')[0], dl); },
-      }, '🔊 překlad'),
+      }, '🔊 translation'),
       h('button', {
         onclick: async (e: Event) => {
           e.stopPropagation();
           const url = `${location.origin}${location.pathname}#w/${r.pair}/${encodeURIComponent(r.w)}`;
           if (navigator.share) await navigator.share({ title: `${r.w} — Dict`, url }).catch(() => {});
-          else { await navigator.clipboard.writeText(url); (e.target as HTMLElement).textContent = '✓ zkopírováno'; }
+          else { await navigator.clipboard.writeText(url); (e.target as HTMLElement).textContent = '✓ copied'; }
         },
-      }, '↗ sdílet'),
+      }, '↗ share'),
     ),
   );
   card.addEventListener('click', () => {

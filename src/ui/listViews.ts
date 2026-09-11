@@ -20,13 +20,13 @@ export async function renderHistory(main: HTMLElement, openWord: OpenWord): Prom
   const items = await getHistory();
   clear(main).append(
     h('div', { class: 'sectionhead' },
-      h('h2', {}, 'Historie'),
+      h('h2', {}, 'History'),
       items.length ? h('button', {
         onclick: async () => { await clearHistory(); renderHistory(main, openWord); },
-      }, 'Smazat vše') : null),
+      }, 'Clear all') : null),
   );
   if (!items.length) {
-    main.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🕘'), 'Zatím žádná hledání'));
+    main.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🕘'), 'No searches yet'));
     return;
   }
   for (const it of items) {
@@ -38,15 +38,15 @@ export async function renderHistory(main: HTMLElement, openWord: OpenWord): Prom
 
 export async function renderFavs(main: HTMLElement, openWord: OpenWord): Promise<void> {
   const items = await getFavs();
-  clear(main).append(h('div', { class: 'sectionhead' }, h('h2', {}, 'Oblíbená slova')));
+  clear(main).append(h('div', { class: 'sectionhead' }, h('h2', {}, 'Favorite words')));
   if (!items.length) {
     main.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '⭐'),
-      'Hvězdičkou u výsledku si slovo uložíš', h('br'), 'a objeví se i v procvičování'));
+      'Star a search result to save it here', h('br'), 'and practice it as a flashcard'));
     return;
   }
   for (const it of items) {
     const unfav = h('button', {
-      class: 'iconbtn faved', style: 'margin-left:auto', title: 'Odebrat',
+      class: 'iconbtn faved', style: 'margin-left:auto', title: 'Remove',
       onclick: async (e: Event) => {
         e.stopPropagation();
         await toggleFav({ id: it.id, word: it.word, pair: it.pair, trans: it.trans });

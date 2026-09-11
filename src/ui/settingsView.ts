@@ -11,21 +11,21 @@ export async function renderSettings(main: HTMLElement): Promise<void> {
 
   const updateStatus = h('p', {});
   clear(main).append(
-    h('div', { class: 'sectionhead' }, h('h2', {}, 'Nastavení')),
+    h('div', { class: 'sectionhead' }, h('h2', {}, 'Settings')),
     h('div', { class: 'settings' },
       h('section', {},
-        h('h3', {}, '📚 Slovníková data'),
-        h('p', {}, `${total.toLocaleString('cs')} hesel ve 12 směrech (EN·ES·FR·CS), verze ${version ?? '—'}. Vše uloženo v zařízení — funguje offline.`),
+        h('h3', {}, '📚 Dictionary data'),
+        h('p', {}, `${total.toLocaleString('en')} entries in 12 directions (EN·ES·FR·CS), version ${version ?? '—'}. Everything is stored on your device — works offline.`),
         h('button', {
           class: 'btn',
           onclick: async (e: Event) => {
             const btn = e.target as HTMLButtonElement;
             btn.disabled = true;
-            updateStatus.textContent = 'Kontroluji…';
+            updateStatus.textContent = 'Checking…';
             try {
               const manifest = await fetchManifest();
               if (manifest.version === version) {
-                updateStatus.textContent = `Data jsou aktuální (${manifest.version}).`;
+                updateStatus.textContent = `Data is up to date (${manifest.version}).`;
               } else {
                 await showOnboarding(true);
                 await loadMeta(true);
@@ -33,33 +33,33 @@ export async function renderSettings(main: HTMLElement): Promise<void> {
                 return;
               }
             } catch {
-              updateStatus.textContent = 'Kontrola se nezdařila — jsi online?';
+              updateStatus.textContent = 'Check failed — are you online?';
             }
             btn.disabled = false;
           },
-        }, 'Zkontrolovat aktualizace'),
+        }, 'Check for updates'),
         updateStatus),
       h('section', {},
-        h('h3', {}, '🗑 Soukromí'),
-        h('p', {}, 'Historie i oblíbená slova zůstávají jen ve tvém zařízení.'),
+        h('h3', {}, '🗑 Privacy'),
+        h('p', {}, 'Your history and favorite words never leave your device.'),
         h('button', {
           class: 'btn danger',
           onclick: async (e: Event) => {
             await clearHistory();
-            (e.target as HTMLElement).textContent = '✓ Historie smazána';
+            (e.target as HTMLElement).textContent = '✓ History cleared';
           },
-        }, 'Smazat historii hledání')),
+        }, 'Clear search history')),
       h('section', {},
-        h('h3', {}, 'ℹ️ O aplikaci a licence dat'),
-        h('p', {}, 'Dict — offline slovník jako PWA. Nainstaluj si ji: v prohlížeči zvol „Přidat na plochu".'),
+        h('h3', {}, 'ℹ️ About & data licenses'),
+        h('p', {}, 'Dict — an offline dictionary PWA. Install it via “Add to Home Screen” in your browser.'),
         h('p', {},
-          'Slovníková data: ',
+          'Dictionary data: ',
           h('a', { href: 'https://www.wikdict.com', target: '_blank', rel: 'noopener' }, 'WikDict'),
-          ' (CC BY-SA 4.0, data z Wiktionary/DBnary) a ',
+          ' (CC BY-SA 4.0, data from Wiktionary/DBnary) and ',
           h('a', { href: 'https://www.svobodneslovniky.cz', target: '_blank', rel: 'noopener' }, 'Svobodné slovníky'),
-          ' (GNU FDL 1.1+, „Založeno na svobodném anglicko-českém slovníku").'),
+          ' (GNU FDL 1.1+, “Based on the free English-Czech dictionary”).'),
         h('p', {},
-          h('a', { href: 'https://github.com/vrkuvrku/dict', target: '_blank', rel: 'noopener' }, 'Zdrojový kód na GitHubu'))),
+          h('a', { href: 'https://github.com/vrkuvrku/dict', target: '_blank', rel: 'noopener' }, 'Source code on GitHub'))),
     ),
   );
 }

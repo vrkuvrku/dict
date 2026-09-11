@@ -28,9 +28,9 @@ export function clear(el: HTMLElement): HTMLElement {
 
 export function relTime(ts: number): string {
   const d = Date.now() - ts;
-  if (d < 60e3) return 'teď';
-  if (d < 3600e3) return `před ${Math.floor(d / 60e3)} min`;
-  if (d < 24 * 3600e3) return `před ${Math.floor(d / 3600e3)} h`;
+  if (d < 60e3) return 'now';
+  if (d < 3600e3) return `${Math.floor(d / 60e3)} min ago`;
+  if (d < 24 * 3600e3) return `${Math.floor(d / 3600e3)} h ago`;
   const days = Math.floor(d / 86400e3);
-  return days === 1 ? 'včera' : `před ${days} dny`;
+  return days === 1 ? 'yesterday' : `${days} days ago`;
 }

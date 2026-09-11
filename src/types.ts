@@ -21,7 +21,7 @@ export interface DataManifest { version: string; pairs: Record<string, { count: 
 export const srcLang = (p: Pair): Lang => p.slice(0, 2) as Lang;
 export const dstLang = (p: Pair): Lang => p.slice(3, 5) as Lang;
 
-export const LANG_NAME: Record<Lang, string> = { en: 'angličtina', es: 'španělština', fr: 'francouzština', cs: 'čeština' };
+export const LANG_NAME: Record<Lang, string> = { en: 'English', es: 'Spanish', fr: 'French', cs: 'Czech' };
 export const TTS_LANG: Record<Lang, string> = { en: 'en-US', es: 'es-ES', fr: 'fr-FR', cs: 'cs-CZ' };
 
 export const normalize = (s: string): string =>

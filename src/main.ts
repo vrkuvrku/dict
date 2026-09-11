@@ -15,11 +15,11 @@ registerSW({ immediate: true });
 
 type Tab = 'search' | 'history' | 'favs' | 'practice' | 'settings';
 const TABS: { id: Tab; ico: string; label: string; hash: string }[] = [
-  { id: 'search', ico: '🔍', label: 'Hledat', hash: '' },
-  { id: 'history', ico: '🕘', label: 'Historie', hash: 'h' },
-  { id: 'favs', ico: '⭐', label: 'Oblíbené', hash: 'f' },
-  { id: 'practice', ico: '🃏', label: 'Procvičit', hash: 'p' },
-  { id: 'settings', ico: '⚙️', label: 'Nastavení', hash: 's' },
+  { id: 'search', ico: '🔍', label: 'Search', hash: '' },
+  { id: 'history', ico: '🕘', label: 'History', hash: 'h' },
+  { id: 'favs', ico: '⭐', label: 'Favorites', hash: 'f' },
+  { id: 'practice', ico: '🃏', label: 'Practice', hash: 'p' },
+  { id: 'settings', ico: '⚙️', label: 'Settings', hash: 's' },
 ];
 
 const app = document.getElementById('app')!;
@@ -33,11 +33,11 @@ function buildLayout(): void {
     h('div', { class: 'searchrow' },
       h('div', { class: 'searchbox' },
         svgSearch(),
-        h('input', { id: 'q', type: 'search', placeholder: 'Hledat slovo…', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' }),
-        h('button', { id: 'clearq', title: 'Vymazat' }, '✕')),
+        h('input', { id: 'q', type: 'search', placeholder: 'Search a word…', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' }),
+        h('button', { id: 'clearq', title: 'Clear' }, '✕')),
       h('span', { class: 'offline-badge' }, 'offline')),
     h('div', { class: 'chips' },
-      h('button', { class: 'chip active' }, 'Vše'),
+      h('button', { class: 'chip active' }, 'All'),
       h('button', { class: 'chip', 'data-lang': 'en' }, 'EN'),
       h('button', { class: 'chip', 'data-lang': 'es' }, 'ES'),
       h('button', { class: 'chip', 'data-lang': 'fr' }, 'FR'),

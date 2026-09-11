@@ -6,13 +6,13 @@ import { PAIRS, LANG_NAME, srcLang, dstLang } from '../types';
 export function showOnboarding(isUpdate = false): Promise<void> {
   return new Promise((resolve) => {
     const bar = h('div', {});
-    const status = h('div', { class: 'status' }, 'Připravuji…');
+    const status = h('div', { class: 'status' }, 'Preparing…');
     const overlay = h('div', { class: 'onboarding' },
       h('img', { src: import.meta.env.BASE_URL + 'icons/icon-192.png', alt: 'Dict' }),
-      h('h1', {}, isUpdate ? 'Aktualizace slovníků' : 'Vítej v Dictu'),
+      h('h1', {}, isUpdate ? 'Updating dictionaries' : 'Welcome to Dict'),
       h('p', {}, isUpdate
-        ? 'Stahuji novou verzi slovníkových dat.'
-        : 'Slovník pro angličtinu, španělštinu, francouzštinu a češtinu. Stáhne se ~21 MB dat, pak už funguje úplně offline.'),
+        ? 'Downloading a new version of the dictionary data.'
+        : 'A dictionary for English, Spanish, French and Czech. It downloads ~21 MB of data once, then works fully offline.'),
       h('div', { class: 'progress' }, bar),
       status,
     );
@@ -27,8 +27,8 @@ export function showOnboarding(isUpdate = false): Promise<void> {
       overlay.remove();
       resolve();
     }).catch((err) => {
-      status.textContent = `Stahování selhalo (${err?.message ?? 'chyba sítě'}).`;
-      const retry = h('button', { class: 'btn', onclick: () => { retry.remove(); run(); } }, 'Zkusit znovu');
+      status.textContent = `Download failed (${err?.message ?? 'network error'}).`;
+      const retry = h('button', { class: 'btn', onclick: () => { retry.remove(); run(); } }, 'Try again');
       overlay.append(retry);
     });
     run();
