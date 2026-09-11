@@ -72,6 +72,13 @@ export async function runSearch(expandWord?: { pair: string; word: string }): Pr
     container.append(h('div', { class: 'hint' }, h('div', { class: 'big' }, '🤷'), `Nothing for “${q.trim()}”`));
     return;
   }
+  // zaloguj do historie nejlepší výsledek hned po vyhledání (ne až po kliknutí)
+  const top = results[0];
+  const logKey = `${top.pair}|${top.w}`;
+  if (!loggedThisSession.has(logKey)) {
+    loggedThisSession.add(logKey);
+    addHistory({ word: top.w, pair: top.pair, trans: top.t, ts: Date.now() });
+  }
   for (const r of results) container.append(renderCard(r, expandWord));
 }
 
@@ -123,11 +130,6 @@ function renderCard(r: Result, expandWord?: { pair: string; word: string }): HTM
     card.classList.toggle('expanded');
     if (card.classList.contains('expanded')) {
       history.replaceState(null, '', `#w/${r.pair}/${encodeURIComponent(r.w)}`);
-      const logKey = `${r.pair}|${r.w}`;
-      if (!loggedThisSession.has(logKey)) {
-        loggedThisSession.add(logKey);
-        addHistory({ word: r.w, pair: r.pair, trans: r.t, ts: Date.now() });
-      }
     }
   });
   if (expandWord && r.pair === expandWord.pair && r.w === expandWord.word) {
